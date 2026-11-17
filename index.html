@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#142238">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gravata Premiada">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Gravata Premiada — Rafael & Patrícia</title>
+<style>
+:root{--navy:#142238;--navy2:#203550;--gold:#c9a86a;--cream:#f7f3eb;--paper:#fffdf8;--ink:#202a36;--muted:#77808b;--line:#e7e0d4;--green:#27775c;--red:#a94442}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;padding:calc(25px + env(safe-area-inset-top)) 18px 22px;text-align:center}
+.kicker{letter-spacing:3px;text-transform:uppercase;color:#e4cc9f;font-size:10px;font-weight:700}
+h1{font-family:Georgia,serif;font-size:28px;font-weight:500;margin:9px 0 5px}.sub{font-size:12px;color:#d8dfeb}
+main{max-width:760px;margin:auto;padding:16px 14px calc(40px + env(safe-area-inset-bottom))}
+.status{display:flex;justify-content:center;gap:7px;align-items:center;color:var(--muted);font-size:12px;margin:2px 0 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
+.stat,.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 3px 12px #1b2b3b08}
+.stat strong{display:block;font-size:24px;color:var(--navy);font-variant-numeric:tabular-nums}.stat span{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow:auto;margin:12px 0;padding:3px 0}
+.tab{border:1px solid var(--line);background:#fffaf1;border-radius:99px;padding:11px 15px;font-size:13px;white-space:nowrap;color:var(--navy);min-height:42px}
+.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.panel{margin-bottom:13px}.panel h2{font-family:Georgia,serif;font-weight:500;font-size:21px;color:var(--navy);margin:0 0 13px}
+label{display:block;font-size:12px;font-weight:650;color:#47515d;margin:11px 0 6px}
+input,select{width:100%;padding:13px 12px;border:1px solid #dcd5c9;border-radius:10px;background:white;font-size:16px;color:var(--ink);outline:none}
+input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c9a86a22}
+button{border:0;border-radius:11px;padding:13px 15px;font-size:14px;font-weight:700;cursor:pointer;min-height:44px}
+button:disabled{opacity:.42;cursor:not-allowed}
+.primary{background:var(--navy);color:white;width:100%;margin-top:14px}
+.secondary{background:#eee7db;color:var(--navy)}.danger{background:#f8e8e6;color:var(--red)}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
+.hint{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
+.hidden{display:none!important}
+.list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.person{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.person b{font-size:14px}.person small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.person button{padding:8px 10px;font-size:12px;min-height:36px}
+.prize{display:flex;gap:10px;align-items:center;margin:8px 0}.prize input{flex:1}
+.drawbox{background:var(--navy);color:white;border-radius:16px;padding:22px;text-align:center;margin:12px 0}
+.drawbox .number{font-family:Georgia,serif;font-size:48px;color:#f0d9aa;margin:8px}
+.winner{background:#fffaf0;color:var(--navy);border-radius:12px;padding:12px;margin:9px 0;text-align:left}
+.winner strong{font-size:18px}.winner small{display:block;color:var(--muted);margin-top:4px}
+.note{background:#f2ecdf;border-radius:10px;padding:11px;font-size:12px;color:#59616b;line-height:1.45}
+footer{text-align:center;color:#92918c;font-size:10px;padding:15px}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:16px;right:16px;background:#142238;color:white;padding:13px 16px;border-radius:12px;box-shadow:0 5px 20px #0003;z-index:9;text-align:center;font-size:13px}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="kicker">Uma celebração especial</div><h1>Gravata Premiada</h1><div class="sub">RAFAEL & PATRÍCIA · DEZEMBRO 2026</div></header>
+<main>
+<div class="status"><i class="dot"></i><span id="connection">Preparando armazenamento local…</span></div>
+<div class="stats">
+ <div class="stat"><strong id="sold">0</strong><span>Números vendidos</span></div>
+ <div class="stat"><strong id="left">1.000</strong><span>Disponíveis</span></div>
+ <div class="stat"><strong id="people">0</strong><span>Participantes</span></div>
+ <div class="stat"><strong id="total">R$ 0</strong><span>Total registrado</span></div>
+</div>
+<nav class="tabs">
+<button class="tab active" data-tab="cadastro">Cadastro</button><button class="tab" data-tab="lista">Participantes</button><button class="tab" data-tab="sorteio">Sorteio</button><button class="tab" data-tab="backup">Backup</button>
+</nav>
+<section id="cadastro" class="view">
+ <div class="panel">
+  <h2>Novo participante</h2>
+  <label for="name">Nome do convidado</label><input id="name" maxlength="70" autocomplete="off" placeholder="Ex.: Fernando">
+  <label for="qty">Quantidade de números (R$ 50 cada)</label><input id="qty" type="number" min="1" max="1000" value="1" inputmode="numeric">
+  <div class="hint" id="preview">1 número · R$ 50,00</div>
+  <button class="primary" id="add">Cadastrar e atribuir números</button>
+  <div id="assigned" class="hint" aria-live="polite"></div>
+ </div>
+ <div class="note">Os números são atribuídos automaticamente, começando pelos menores disponíveis. Cada número custa R$ 50. Faça um backup dos cadastros com frequência.</div>
+</section>
+<section id="lista" class="view hidden">
+ <div class="panel"><h2>Participantes cadastrados</h2><input id="search" placeholder="Buscar por nome ou número…"><div id="peopleList" class="list"></div></div>
+</section>
+<section id="sorteio" class="view hidden">
+ <div class="panel"><h2>Prêmios</h2>
+  <div class="prize"><input id="prize1" value="Whisky" aria-label="Primeiro prêmio"></div>
+  <div class="prize"><input id="prize2" value="Fardo de cerveja" aria-label="Segundo prêmio"></div>
+  <div class="prize"><input id="prize3" value="Vale-picanha de R$ 100" aria-label="Terceiro prêmio"></div>
+  <button class="secondary" id="savePrizes">Salvar nomes dos prêmios</button>
+ </div>
+ <div class="panel"><h2>Hora do sorteio</h2><div class="hint">O sorteio escolhe três participantes diferentes entre os números cadastrados. O resultado fica salvo neste aparelho.</div>
+  <div id="drawArea" class="drawbox"><div class="kicker">Boa sorte!</div><div class="number">???</div><div>Os ganhadores aparecerão aqui.</div></div>
+  <button class="primary" id="draw">Sortear os 3 ganhadores</button>
+  <button class="secondary" id="reveal" style="width:100%;margin-top:8px" disabled>Revelar próximo prêmio</button>
+  <button class="danger" id="resetDraw" style="width:100%;margin-top:8px">Apagar resultado e sortear novamente</button>
+  <div class="hint" id="drawHint"></div>
+ </div>
+</section>
+<section id="backup" class="view hidden">
+ <div class="panel"><h2>Segurança dos dados</h2><p class="hint">Os dados ficam salvos neste navegador e aparelho. Exporte um backup e guarde em Arquivos/iCloud Drive.</p>
+  <button class="primary" id="exportJson">Baixar backup completo (JSON)</button>
+  <button class="secondary" id="exportCsv" style="width:100%;margin-top:8px">Exportar lista (CSV)</button>
+  <label for="importFile">Restaurar backup JSON</label><input id="importFile" type="file" accept=".json,application/json">
+  <div class="hint" id="backupTime">Nenhum backup exportado nesta sessão.</div>
+  <div class="note" style="margin-top:14px">Se trocar de aparelho, limpar os dados do navegador ou reinstalar o app, restaure seu backup.</div>
+ </div>
+</section>
+<footer>Gravata Premiada · Rafael & Patrícia</footer>
+</main><div id="toast" class="toast hidden" role="status"></div>
+<script>
+const KEY='gravata-premiada-rp-v2';
+const defaults=()=>({entries:[],draw:null,prizes:['Whisky','Fardo de cerveja','Vale-picanha de R$ 100'],lastBackup:null});
+let state=defaults(), dbReady=false;
+const $=id=>document.getElementById(id);
+function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
+function fmt(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function activeTickets(){return state.entries.flatMap(e=>e.numbers.map(n=>({number:n,name:e.name,entryId:e.id})))}
+function usedNumbers(){return new Set(activeTickets().map(t=>t.number))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));render()}catch(e){toast('Erro ao salvar. Exporte um backup e verifique o espaço do aparelho.')}}
+function render(){
+ const tickets=activeTickets();$('sold').textContent=tickets.length.toLocaleString('pt-BR');$('left').textContent=(1000-tickets.length).toLocaleString('pt-BR');$('people').textContent=state.entries.length.toLocaleString('pt-BR');$('total').textContent=fmt(tickets.length*50);
+ const q=($('search').value||'').trim().toLowerCase(),list=$('peopleList');list.innerHTML='';
+ const filtered=state.entries.filter(e=>e.name.toLowerCase().includes(q)||e.numbers.some(n=>String(n).padStart(3,'0').includes(q)));
+ filtered.forEach(e=>{
+  const div=document.createElement('div');div.className='person';const info=document.createElement('div');const b=document.createElement('b');b.textContent=e.name;const sm=document.createElement('small');sm.textContent=e.numbers.map(n=>String(n).padStart(3,'0')).join(', ')+' · '+fmt(e.numbers.length*50);info.append(b,sm);
+  const actions=document.createElement('div');actions.className='row';actions.style.flex='0 0 auto';
+  const edit=document.createElement('button');edit.className='secondary';edit.textContent='Editar';edit.onclick=()=>{const v=prompt('Novo nome:',e.name);if(v&&v.trim()){e.name=v.trim();save()}};
+  const del=document.createElement('button');del.className='danger';del.textContent='Excluir';del.onclick=()=>{if(confirm('Excluir '+e.name+' e liberar '+e.numbers.length+' número(s)?')){state.entries=state.entries.filter(x=>x.id!==e.id);if(state.draw)state.draw=null;save()}};
+  actions.append(edit,del);div.append(info,actions);list.append(div);
+ });
+ if(!filtered.length)list.innerHTML='<div class="hint">Nenhum participante encontrado.</div>';
+ for(let i=0;i<3;i++)if(document.activeElement!==$('prize'+(i+1)))$('prize'+(i+1)).value=state.prizes[i]||'';
+ renderDraw();
+}
+function renderDraw(){
+ const area=$('drawArea'),btn=$('reveal'),hint=$('drawHint');
+ if(!state.draw){area.innerHTML='<div class="kicker">Boa sorte!</div><div class="number">???</div><div>Os ganhadores aparecerão aqui.</div>';btn.disabled=true;$('draw').disabled=new Set(activeTickets().map(t=>t.entryId)).size<3;hint.textContent='';return}
+ $('draw').disabled=true;const d=state.draw;let html='<div class="kicker">Resultado do sorteio</div>';
+ d.winners.forEach((w,i)=>{html+='<div class="winner"><small>'+esc(w.prize)+'</small><strong>'+(i<d.revealed?'#'+String(w.number).padStart(3,'0')+' — '+esc(w.name):'Prêmio ainda não revelado')+'</strong></div>'});
+ area.innerHTML=html;btn.disabled=d.revealed>=3;hint.textContent=d.revealed>=3?'Todos os ganhadores foram revelados.':(3-d.revealed)+' prêmio(s) aguardando revelação.';
+}
+$('qty').addEventListener('input',()=>{const q=Math.max(1,Math.min(1000,Number($('qty').value)||1));$('preview').textContent=q+' número(s) · '+fmt(q*50)});
+$('add').onclick=()=>{
+ const name=$('name').value.trim(),qty=Number($('qty').value);
+ if(!name){toast('Informe o nome do convidado.');$('name').focus();return}
+ if(!Number.isInteger(qty)||qty<1||qty>1000){toast('Informe uma quantidade entre 1 e 1.000.');return}
+ const used=usedNumbers(),free=[];for(let n=1;n<=1000&&free.length<qty;n++)if(!used.has(n))free.push(n);
+ if(free.length<qty){toast('Não há números suficientes. Restam '+free.length+'.');return}
+ const entry={id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),name,numbers:free,createdAt:new Date().toISOString()};
+ state.entries.push(entry);save();$('assigned').textContent=name+' recebeu: '+free.map(n=>String(n).padStart(3,'0')).join(', ');$('name').value='';$('qty').value=1;$('preview').textContent='1 número · R$ 50,00';toast('Cadastro realizado!');
+};
+$('search').addEventListener('input',render);
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));render()});
+$('savePrizes').onclick=()=>{state.prizes=[1,2,3].map(i=>$('prize'+i).value.trim()||'Prêmio '+i);save();toast('Prêmios salvos!')};
+function randomIndex(max){const a=new Uint32Array(1),limit=Math.floor(0x100000000/max)*max;let x;do{crypto.getRandomValues(a);x=a[0]}while(x>=limit);return x%max}
+$('draw').onclick=()=>{
+ const tickets=activeTickets();if(new Set(tickets.map(t=>t.entryId)).size<3){toast('Cadastre pelo menos 3 participantes diferentes.');return}
+ if(state.draw){toast('Já existe um sorteio salvo.');return}
+ const pool=tickets.slice(),winners=[];
+ for(let i=0;i<3;i++){const t=pool[randomIndex(pool.length)];winners.push({number:t.number,name:t.name,prize:state.prizes[i]||'Prêmio '+(i+1)});for(let j=pool.length-1;j>=0;j--)if(pool[j].entryId===t.entryId)pool.splice(j,1)}
+ state.draw={winners,revealed:0,createdAt:new Date().toISOString()};save();toast('Sorteio preparado. Revele os prêmios um por vez.');
+};
+$('reveal').onclick=()=>{if(state.draw&&state.draw.revealed<3){state.draw.revealed++;save()}};
+$('resetDraw').onclick=()=>{if(confirm('Apagar o resultado salvo e permitir um novo sorteio?')){state.draw=null;save();toast('Resultado apagado.')}};
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+$('exportJson').onclick=()=>{state.lastBackup=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(state));download('backup-gravata-rafael-patricia.json',JSON.stringify(state,null,2),'application/json');$('backupTime').textContent='Backup gerado em '+new Date(state.lastBackup).toLocaleString('pt-BR');toast('Backup exportado!')};
+$('exportCsv').onclick=()=>{const rows=[['Numero','Nome','Valor']];activeTickets().sort((a,b)=>a.number-b.number).forEach(t=>rows.push([String(t.number).padStart(3,'0'),t.name,'50']));download('participantes-gravata.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n'),'text/csv;charset=utf-8')};
+$('importFile').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||!Array.isArray(x.entries))throw Error('Formato inválido');const seen=new Set(),ids=new Set();for(const e of x.entries){if(!e.name||!Array.isArray(e.numbers)||!e.numbers.length||!e.id||ids.has(e.id))throw Error('Cadastro inválido');ids.add(e.id);for(const n of e.numbers){if(!Number.isInteger(n)||n<1||n>1000||seen.has(n))throw Error('Número inválido ou duplicado');seen.add(n)}}if(!confirm('Restaurar este backup e substituir os dados atuais?'))return;state={entries:x.entries,draw:x.draw||null,prizes:Array.isArray(x.prizes)?x.prizes:defaults().prizes,lastBackup:x.lastBackup||null};save();toast('Backup restaurado!')}catch(e){toast('Falha ao importar: '+e.message)}finally{ev.target.value=''}};
+async function init(){
+ try{const raw=localStorage.getItem(KEY);if(raw){const x=JSON.parse(raw);if(Array.isArray(x.entries))state={...defaults(),...x}}}catch(e){toast('Não foi possível ler os dados salvos.')}
+ $('connection').textContent=navigator.onLine?'Dados salvos neste aparelho · pronto':'Modo offline · dados locais';
+ if('serviceWorker'in navigator && location.protocol!=='file:'){try{await navigator.serviceWorker.register('./sw.js');}catch(e){$('connection').textContent='App aberto · cache offline não confirmado'}}
+ render();
+}
+window.addEventListener('online',()=>$('connection').textContent='Conectado · dados salvos neste aparelho');
+window.addEventListener('offline',()=>$('connection').textContent='Modo offline · dados locais');
+init();
+</script>
+</body></html>

@@ -1,0 +1,12 @@
+# Gravata Premiada — Rafael & Patrícia
+
+## Publicar e instalar no iPhone
+Este é um PWA estático. Para que o iPhone permita instalar e o modo offline funcione, publique a pasta inteira em uma hospedagem HTTPS (por exemplo, Netlify ou GitHub Pages).
+
+1. Envie os arquivos desta pasta para uma hospedagem estática HTTPS.
+2. Abra o endereço publicado no Safari do iPhone.
+3. Abra Compartilhar → Adicionar à Tela de Início.
+4. Abra pelo ícone criado. Depois da primeira abertura com internet, o service worker guarda o app para uso offline.
+5. Faça um backup JSON em Backup antes de cadastrar os convidados e novamente ao final.
+
+Os dados ficam no armazenamento local do navegador/aparelho. Não limpe os dados do Safari nem desinstale sem antes exportar o backup.
