@@ -80,8 +80,8 @@ footer{text-align:center;color:#92918c;font-size:10px;padding:15px}
 </section>
 <section id="sorteio" class="view hidden">
  <div class="panel"><h2>Prêmios</h2>
-  <div class="prize"><input id="prize1" value="Whisky" aria-label="Primeiro prêmio"></div>
-  <div class="prize"><input id="prize2" value="Fardo de cerveja" aria-label="Segundo prêmio"></div>
+  <div class="prize"><input id="prize1" value="24 Long Necks de Stella Gold" aria-label="Primeiro prêmio"></div>
+  <div class="prize"><input id="prize2" value="1 Whisky Jack Daniel's" aria-label="Segundo prêmio"></div>
   <div class="prize"><input id="prize3" value="Vale-picanha de R$ 100" aria-label="Terceiro prêmio"></div>
   <button class="secondary" id="savePrizes">Salvar nomes dos prêmios</button>
  </div>
@@ -106,7 +106,8 @@ footer{text-align:center;color:#92918c;font-size:10px;padding:15px}
 </main><div id="toast" class="toast hidden" role="status"></div>
 <script>
 const KEY='gravata-premiada-rp-v2';
-const defaults=()=>({entries:[],draw:null,prizes:['Whisky','Fardo de cerveja','Vale-picanha de R$ 100'],lastBackup:null});
+const OLD_DEFAULT_PRIZES=['Whisky','Fardo de cerveja','Vale-picanha de R$ 100'];
+const defaults=()=>({entries:[],draw:null,prizes:['24 Long Necks de Stella Gold',"1 Whisky Jack Daniel's",'1 Vale-picanha de R$ 100'],lastBackup:null});
 let state=defaults(), dbReady=false;
 const $=id=>document.getElementById(id);
 function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
@@ -167,7 +168,7 @@ $('exportJson').onclick=()=>{state.lastBackup=new Date().toISOString();localStor
 $('exportCsv').onclick=()=>{const rows=[['Numero','Nome','Valor']];activeTickets().sort((a,b)=>a.number-b.number).forEach(t=>rows.push([String(t.number).padStart(3,'0'),t.name,'50']));download('participantes-gravata.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n'),'text/csv;charset=utf-8')};
 $('importFile').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||!Array.isArray(x.entries))throw Error('Formato inválido');const seen=new Set(),ids=new Set();for(const e of x.entries){if(!e.name||!Array.isArray(e.numbers)||!e.numbers.length||!e.id||ids.has(e.id))throw Error('Cadastro inválido');ids.add(e.id);for(const n of e.numbers){if(!Number.isInteger(n)||n<1||n>1000||seen.has(n))throw Error('Número inválido ou duplicado');seen.add(n)}}if(!confirm('Restaurar este backup e substituir os dados atuais?'))return;state={entries:x.entries,draw:x.draw||null,prizes:Array.isArray(x.prizes)?x.prizes:defaults().prizes,lastBackup:x.lastBackup||null};save();toast('Backup restaurado!')}catch(e){toast('Falha ao importar: '+e.message)}finally{ev.target.value=''}};
 async function init(){
- try{const raw=localStorage.getItem(KEY);if(raw){const x=JSON.parse(raw);if(Array.isArray(x.entries))state={...defaults(),...x}}}catch(e){toast('Não foi possível ler os dados salvos.')}
+ try{const raw=localStorage.getItem(KEY);if(raw){const x=JSON.parse(raw);if(Array.isArray(x.entries)){state={...defaults(),...x};if(Array.isArray(x.prizes)&&x.prizes.length===3&&x.prizes.every((v,i)=>v===OLD_DEFAULT_PRIZES[i])){state.prizes=defaults().prizes;localStorage.setItem(KEY,JSON.stringify(state))}}}}catch(e){toast('Não foi possível ler os dados salvos.')}
  $('connection').textContent=navigator.onLine?'Dados salvos neste aparelho · pronto':'Modo offline · dados locais';
  if('serviceWorker'in navigator && location.protocol!=='file:'){try{await navigator.serviceWorker.register('./sw.js');}catch(e){$('connection').textContent='App aberto · cache offline não confirmado'}}
  render();
