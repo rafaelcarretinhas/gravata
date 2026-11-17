@@ -73,7 +73,7 @@ footer{text-align:center;color:#92918c;font-size:10px;padding:15px}
   <button class="primary" id="add">Cadastrar e atribuir números</button>
   <div id="assigned" class="hint" aria-live="polite"></div>
  </div>
- <div class="note">Os números são atribuídos automaticamente, começando pelos menores disponíveis. Cada número custa R$ 50. Faça um backup dos cadastros com frequência.</div>
+ <div class="note">Os números são atribuídos aleatoriamente entre os disponíveis, sem repetição. Cada número custa R$ 50. Faça um backup dos cadastros com frequência.</div>
 </section>
 <section id="lista" class="view hidden">
  <div class="panel"><h2>Participantes cadastrados</h2><input id="search" placeholder="Buscar por nome ou número…"><div id="peopleList" class="list"></div></div>
@@ -142,10 +142,12 @@ $('add').onclick=()=>{
  const name=$('name').value.trim(),qty=Number($('qty').value);
  if(!name){toast('Informe o nome do convidado.');$('name').focus();return}
  if(!Number.isInteger(qty)||qty<1||qty>1000){toast('Informe uma quantidade entre 1 e 1.000.');return}
- const used=usedNumbers(),free=[];for(let n=1;n<=1000&&free.length<qty;n++)if(!used.has(n))free.push(n);
- if(free.length<qty){toast('Não há números suficientes. Restam '+free.length+'.');return}
- const entry={id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),name,numbers:free,createdAt:new Date().toISOString()};
- state.entries.push(entry);save();$('assigned').textContent=name+' recebeu: '+free.map(n=>String(n).padStart(3,'0')).join(', ');$('name').value='';$('qty').value=1;$('preview').textContent='1 número · R$ 50,00';toast('Cadastro realizado!');
+ const used=usedNumbers(),available=[];for(let n=1;n<=1000;n++)if(!used.has(n))available.push(n);
+ if(available.length<qty){toast('Não há números suficientes. Restam '+available.length+'.');return}
+ const assigned=[];for(let i=0;i<qty;i++){const index=randomIndex(available.length);assigned.push(available[index]);available.splice(index,1)}
+ assigned.sort((a,b)=>a-b);
+ const entry={id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),name,numbers:assigned,createdAt:new Date().toISOString()};
+ state.entries.push(entry);save();$('assigned').textContent=name+' recebeu: '+assigned.map(n=>String(n).padStart(3,'0')).join(', ');$('name').value='';$('qty').value=1;$('preview').textContent='1 número · R$ 50,00';toast('Cadastro realizado!');
 };
 $('search').addEventListener('input',render);
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));render()});
